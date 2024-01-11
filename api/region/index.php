@@ -111,3 +111,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // //         echo json_encode(array("http_response_code" => array("code" => 403, "message" => "Prohibido el acceso a la Base de Datos")));
 // //     }
 // // }
+
+/*
+
+DROP DATABASE seguimiento_estudiante;
+DROP USER seguimiento;
+
+CREATE DATABASE seguimiento_estudiante;
+-- CREATE USER 'seguimiento' IDENTIFIED BY "L+G0)!4hQ55s+Z^UgIIH4AVP3+(Lex%u8$PmlVcPLdX@S64$R3yWjE^hYaXp";
+-- GRANT ALL PRIVILEGES ON seguimiento_estudiante.* TO 'seguimiento'@'localhost';
+-- GRANT ALL PRIVILEGES ON seguimiento_estudiante.* TO 'seguimiento'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+show grants;
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'M4rc3l1t4.123.abcD';
+FLUSH PRIVILEGES;
+
+-- tablas bd -- 
+use seguimiento_estudiante;
+
+CREATE TABLE region(
+	id INT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    numero INT NOT NULL UNIQUE,
+    romano VARCHAR(10) NOT NULL UNIQUE,
+    activo BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE comuna(
+	id INT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    region_id INT NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (region_id) REFERENCES region(id)
+);
+
+CREATE TABLE establecimiento(
+	id INT PRIMARY KEY,
+    rbd VARCHAR(50) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    direccion_calle VARCHAR(100) NOT NULL,
+    comuna_id INT NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (comuna_id) REFERENCES comuna(id)
+);
+
+CREATE TABLE plataforma(
+	id INT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    activo BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE estudiante(
+	id INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    rut VARCHAR(13) NOT NULL,
+    fecha_nacimiento DATE,
+    email VARCHAR(100),
+    fono VARCHAR(20),
+    titulo_pregrado VARCHAR(200),
+    titulo_pregrado_universidad VARCHAR(200),
+    titulo_pregrado_mencion VARCHAR(200),
+    activo BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE estudiante_plataforma(
+	id INT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    estudiante_id INT NOT NULL,
+    plataforma_id INT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (estudiante_id) REFERENCES estudiante(id),
+    FOREIGN KEY (plataforma_id) REFERENCES plataforma(id)
+);
+
+CREATE TABLE estudiante_establecimiento(
+	id INT PRIMARY KEY,
+    estudiante_id INT NOT NULL,
+    establecimiento_id INT NOT NULL,
+    fecha_ingreso TIMESTAMP,
+    fecha_salida TIMESTAMP,
+    FOREIGN KEY (estudiante_id) REFERENCES estudiante(id),
+    FOREIGN KEY (establecimiento_id) REFERENCES establecimiento(id)
+);
+
+CREATE TABLE estudiante_direccion(
+	id INT PRIMARY KEY,
+    estudiante_id INT NOT NULL,
+    direccion_calle VARCHAR(100) NOT NULL,
+    comuna_id INT NOT NULL,
+    fecha_ingreso TIMESTAMP,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (estudiante_id) REFERENCES estudiante(id),
+    FOREIGN KEY (comuna_id) REFERENCES comuna(id)
+);
+
+*/
